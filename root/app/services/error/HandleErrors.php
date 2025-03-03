@@ -2,11 +2,12 @@
 
 namespace Root\App\Services\Error;
 
-class ErrorFactory
+trait HandleErrors
 {
-    public static function createError($class = null, $view = "error" , $message = null, $status = 500)
+    public static function error( $view = "error" , $message = null, $status = 500)
     {
-              Error::getInstance()
+            $class = get_called_class();
+            Error::getInstance()
             ->setStatusCode($status)
             ->setMessages(["[$class] $message"])
             ->setView($view) // Uses error.php by default
