@@ -1,7 +1,8 @@
 <?php
 
-if(!function_exists("dd")){
-    function dd($data){
+if (!function_exists("dd")) {
+    function dd($data)
+    {
         echo "<pre>";
         var_dump($data);
         echo "</pre>";
@@ -9,10 +10,18 @@ if(!function_exists("dd")){
     }
 }
 
-if(!function_exists("dump")){
-    function dump($data){
+if (!function_exists("dump")) {
+    function dump($data)
+    {
         echo "<pre>";
         var_dump($data);
         echo "</pre>";
+    }
+}
+
+if (!function_exists("view")) {
+    function view($fileName)
+    {
+        dd($fileName);
     }
 }
