@@ -6,13 +6,20 @@ trait RouteTrait
 {
     private  $allowedMethods = ["get", "post", "delete", "put", "patch"];
 
-    protected  function validate($method, $arguement)
+    protected  function registerRoutes($method, $arguement)
+    {
+        $this->validate($method, $arguement);
+    }
+
+    private function validate($method, $arguement)
     {
         $this->validateMethod($method);
         $this->validateArguement($arguement);
+        $this->validateUrl($arguement[0]);
+        $this->validateHandler($arguement[1]);
     }
 
-    protected  function validateMethod($method)
+    private  function validateMethod($method)
     {
         if (!in_array(strtolower($method), $this->allowedMethods)) {
             $errorMessage = $method . " " . "method is not allowed";
@@ -24,9 +31,10 @@ trait RouteTrait
         }
     }
 
-    protected function validateArguement($arguement)
+    private function validateArguement($arguement)
     {
-        if (count($arguement) === 0) {
+        $count = count($arguement);
+        if ($count === 0) {
             $this->error(
                 $view = "error",
                 $message = [
@@ -38,8 +46,7 @@ trait RouteTrait
             );
         }
 
-        if (count($arguement) < 2 && count($arguement) > 0 && gettype($arguement[0]) === "string") {
-            dd("here");
+        if ($count < 2 && $count > 0 && is_string($arguement[0])) {
             $this->error(
                 $view = "error",
                 $message = [
@@ -51,13 +58,59 @@ trait RouteTrait
             );
         }
 
-        if (count($arguement) < 2 && count($arguement) > 0 && (gettype($arguement[0])  === "object" || gettype($arguement[0])  === "array")) {
+        if ($count < 2 && $count > 0 && (is_object($arguement[0]) || is_array($arguement[0]))) {
             $this->error(
                 $view = "error",
                 $message = [
                     "Create Route Error",
                     "Required First Arguement",
                     "It must be url string",
+                ],
+                $status = 500
+            );
+        }
+    }
+
+    private function validateUrl($url)
+    {
+        if (!is_string($url)) {
+            $this->error(
+                $view = "error",
+                $message = [
+                    "Create Route Error",
+                    "Url must be string",
+                ],
+                $status = 500
+            );
+        }
+    }
+
+    private function validateHandler($method)
+    {
+        if (is_object($method) || is_array($method)) {
+            if (is_object($method)) {
+                if (!is_callable($method)) {
+                    $this->error(
+                        $view = "error",
+                        $message = [
+                            "Create Route Error",
+                            "Second arguement" . " " . $method . " " . " is not callable function!",
+                        ],
+                        $status = 500
+                    );
+                }
+            }
+
+            if (is_array($method)) {
+                dd(gettype($method[0]));
+            }
+        } else {
+            $this->error(
+                $view = "error",
+                $message = [
+                    "Create Route Error",
+                    "Second arguement is invalid",
+                    "It must be method or array with controller name and method name",
                 ],
                 $status = 500
             );

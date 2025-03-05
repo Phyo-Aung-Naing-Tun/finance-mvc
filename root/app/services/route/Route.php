@@ -13,8 +13,6 @@ class Route extends MainService
 
    public static function __callStatic($name, $arguments)
    {
-      $instance = new self();
-
-      $instance->validate($name, $arguments);
+      (new self())->registerRoutes($name, $arguments);
    }
 }
