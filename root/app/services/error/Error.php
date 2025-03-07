@@ -49,5 +49,6 @@ class Error
         $status = $this->statusCode;
         $view = $this->view;
         include_once($this->view);
+        die();
     }
 }

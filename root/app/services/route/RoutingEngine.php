@@ -2,21 +2,23 @@
 
 namespace Root\App\Services\Route;
 
-trait RouteTrait
+use Root\App\Services\MainService;
+
+abstract class RoutingEngine extends MainService
 {
     private  $allowedMethods = ["get", "post", "delete", "put", "patch"];
 
-    protected  function registerRoutes($method, $arguement)
+    protected  function registerRoutes($method, $argument)
     {
-        $this->validate($method, $arguement);
+        $this->validate($method, $argument);
     }
 
-    private function validate($method, $arguement)
+    private function validate($method, $argument)
     {
         $this->validateMethod($method);
-        $this->validateArguement($arguement);
-        $this->validateUrl($arguement[0]);
-        $this->validateHandler($arguement[1]);
+        $this->validateArgument($argument);
+        $this->validateUrl($argument[0]);
+        $this->validateHandler($argument[1]);
     }
 
     private  function validateMethod($method)
@@ -31,39 +33,39 @@ trait RouteTrait
         }
     }
 
-    private function validateArguement($arguement)
+    private function validateArgument($argument)
     {
-        $count = count($arguement);
+        $count = count($argument);
         if ($count === 0) {
             $this->error(
                 $view = "error",
                 $message = [
                     "Create Route Error",
-                    "Required Two Arguements",
+                    "Required Two Arguments",
                     "First for url and second for method or array with controller name and method name"
                 ],
                 $status = 500
             );
         }
 
-        if ($count < 2 && $count > 0 && is_string($arguement[0])) {
+        if ($count < 2 && $count > 0 && is_string($argument[0])) {
             $this->error(
                 $view = "error",
                 $message = [
                     "Create Route Error",
-                    "Required Second Arguement",
+                    "Required Second Argument",
                     "It must be method or array with controller name and method name",
                 ],
                 $status = 500
             );
         }
 
-        if ($count < 2 && $count > 0 && (is_object($arguement[0]) || is_array($arguement[0]))) {
+        if ($count < 2 && $count > 0 && (is_object($argument[0]) || is_array($argument[0]))) {
             $this->error(
                 $view = "error",
                 $message = [
                     "Create Route Error",
-                    "Required First Arguement",
+                    "Required First Argument",
                     "It must be url string",
                 ],
                 $status = 500
@@ -94,7 +96,7 @@ trait RouteTrait
                         $view = "error",
                         $message = [
                             "Create Route Error",
-                            "Second arguement" . " " . $method . " " . " is not callable function!",
+                            "Second argument" . " " . $method . " " . " is not callable function!",
                         ],
                         $status = 500
                     );
@@ -102,14 +104,39 @@ trait RouteTrait
             }
 
             if (is_array($method)) {
-                dd(gettype($method[0]));
+
+                $controller = $method[0];
+
+                $controllerMethod = $method[1];
+
+                if (!class_exists($controller)) {
+                    $this->error(
+                        $view = "error",
+                        $message = [
+                            "Create Route Error",
+                            "Controller doesn't exist" . " " . $controller,
+                        ],
+                        $status = 500
+                    );
+                };
+
+                if (!method_exists($controller, $controllerMethod)) {
+                    $this->error(
+                        $view = "error",
+                        $message = [
+                            "Create Route Error",
+                            "Can't find method ( $controllerMethod ) in controller ($controller)",
+                        ],
+                        $status = 500
+                    );
+                }
             }
         } else {
             $this->error(
                 $view = "error",
                 $message = [
                     "Create Route Error",
-                    "Second arguement is invalid",
+                    "Second argument is invalid",
                     "It must be method or array with controller name and method name",
                 ],
                 $status = 500

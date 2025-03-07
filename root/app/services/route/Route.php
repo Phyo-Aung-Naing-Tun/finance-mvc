@@ -2,11 +2,8 @@
 
 namespace Root\App\Services\Route;
 
-use Root\App\Services\MainService;
-
-class Route extends MainService
+class Route extends RoutingEngine
 {
-   use RouteTrait;
 
    private static $routes = [];
 
