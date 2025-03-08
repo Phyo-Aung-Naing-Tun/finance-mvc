@@ -8,4 +8,7 @@ use Root\App\Services\Route\Route;
 Route::get("/product/{id}", function () {
     dd("here");
 });
-Route::post("/login", [LogInController::class, "logi"]);
+Route::post("/login", [LogInController::class, "login"]);
+
+
+dd(Route::getRoutes());

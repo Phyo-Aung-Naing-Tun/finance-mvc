@@ -6,11 +6,30 @@ use Root\App\Services\MainService;
 
 abstract class RoutingEngine extends MainService
 {
+    protected $routes = [];
     private  $allowedMethods = ["get", "post", "delete", "put", "patch"];
 
     protected  function registerRoutes($method, $argument)
     {
         $this->validate($method, $argument);
+        $this->createRoute($method, $argument);
+        return $this;
+    }
+
+    private function createRoute($method, $argument)
+    {
+        $url = $argument[0];
+        $controller = is_array($argument[1]) && count($argument[1]) === 2 ? $argument[1][0] : null;
+        $method = is_array($argument[1]) && count($argument[1]) === 2 ? $argument[1][1] : $argument[1];
+
+        $route = [
+            "method" => $method,
+            "url" => $url,
+            "controller" => $controller,
+            "method" =>  $method,
+        ];
+
+        array_push($this->routes, $route);
     }
 
     private function validate($method, $argument)
