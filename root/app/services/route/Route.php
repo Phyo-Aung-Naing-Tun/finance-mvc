@@ -18,4 +18,9 @@ class Route extends RoutingEngine
    {
       return self::$routeEngine->routes;
    }
+
+   public static function dispatch()
+   {
+      dd(request()->method);
+   }
 }

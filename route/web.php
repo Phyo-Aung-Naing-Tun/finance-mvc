@@ -9,6 +9,4 @@ Route::get("/product/{id}", function () {
     dd("here");
 });
 Route::post("/login", [LogInController::class, "login"]);
-
-
-dd(Route::getRoutes());
+Route::post("/login", [LogInController::class, "login"]);
