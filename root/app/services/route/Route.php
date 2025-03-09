@@ -21,6 +21,6 @@ class Route extends RoutingEngine
 
    public static function dispatch()
    {
-      dd(request()->method);
+      dd(request()->all());
    }
 }
