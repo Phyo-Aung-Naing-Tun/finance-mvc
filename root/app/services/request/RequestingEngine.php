@@ -7,7 +7,7 @@ abstract class RequestingEngine
 
     private $server;
     public $method;
-    public $uri;
+    public $url;
     public $host;
     public $headers = [];
     public $param; //data from get method
@@ -19,7 +19,7 @@ abstract class RequestingEngine
     {
         $this->server = $_SERVER;
         $this->setMethod()
-            ->setUri()
+            ->setUrl()
             ->setHost()
             ->setHeaders()
             ->setParam()
@@ -34,9 +34,9 @@ abstract class RequestingEngine
         return $this;
     }
 
-    public function setUri($uri = null)
+    public function setUrl($url = null)
     {
-        $this->uri = $uri ? $uri : $this->server['REQUEST_URI'] ?? '/';
+        $this->url = $url ? $url : $this->server['REQUEST_URI'] ?? '/';
         return $this;
     }
 
@@ -91,9 +91,9 @@ abstract class RequestingEngine
         return $this->method;
     }
 
-    public function getUri(): string
+    public function getUrl(): string
     {
-        return $this->uri;
+        return $this->url;
     }
 
     public function getHost(): string

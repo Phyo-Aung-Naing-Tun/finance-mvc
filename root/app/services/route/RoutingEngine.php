@@ -20,16 +20,37 @@ abstract class RoutingEngine extends MainService
     {
         $url = $argument[0];
         $controller = is_array($argument[1]) && count($argument[1]) === 2 ? $argument[1][0] : null;
-        $method = is_array($argument[1]) && count($argument[1]) === 2 ? $argument[1][1] : $argument[1];
+        $handler = is_array($argument[1]) && count($argument[1]) === 2 ? $argument[1][1] : $argument[1];
 
         $route = [
             "method" => $method,
             "url" => $url,
             "controller" => $controller,
-            "method" =>  $method,
+            "handler" =>  $handler,
         ];
 
+        $this->finalValidate($route);
+
         array_push($this->routes, $route);
+    }
+    //fot duplicated route
+    private function finalValidate($route)
+    {
+        $data = array_filter($this->routes, function ($data) use ($route) {
+            return $data["method"] == $route["method"] && $data["url"] == $route["url"];
+        });
+
+        if (count($data)) {
+            $this->error(
+                $view = "error",
+                $message = [
+                    "Create Route Error!",
+                    "Duplicated Route",
+                    "This route" . " " .  $route["url"] . " " . "with" . " " . $route["method"] . " " . " has been declared"
+                ],
+                $status = 500
+            );
+        }
     }
 
     private function validate($method, $argument)

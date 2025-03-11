@@ -5,8 +5,10 @@ use Root\App\Services\Route\Route;
 
 
 
-Route::get("/product/{id}", function () {
-    dd("here");
+Route::get("/", function () {
+    view("home");
 });
-Route::post("/login", [LogInController::class, "login"]);
+
+
+Route::get("/login", [LogInController::class, "index"]);
 Route::post("/login", [LogInController::class, "login"]);

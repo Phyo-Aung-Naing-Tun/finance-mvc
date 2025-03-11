@@ -1,10 +1,5 @@
 <?php
 
-include __DIR__ . "/root/app/services/request/helper.php";
-
-
-
-
 if (!function_exists("dd")) {
     function dd($data)
     {
@@ -27,6 +22,7 @@ if (!function_exists("dump")) {
 if (!function_exists("view")) {
     function view($fileName)
     {
-        dd($fileName);
+        $home = "my";
+        include "./resource/view/" . $fileName  . '.php';
     }
 }
