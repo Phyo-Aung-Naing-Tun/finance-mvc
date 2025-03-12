@@ -14,12 +14,12 @@ class Route extends RoutingEngine
       self::$routeEngine->registerRoutes($name, $arguments);
    }
 
-   public static function getRoutes()
+   public static function getRoutes() // get the registered routes
    {
       return self::$routeEngine->routes;
    }
 
-   public static function getRequestRoute()
+   public static function getRequestRoute() // get the user request route to dispatch
    {
       $routeData = [];
 
@@ -39,7 +39,7 @@ class Route extends RoutingEngine
          }
       }
 
-      if (!count($routeData) > 0) {
+      if (!count($routeData) > 0) { // if there is no matched route, error will be showed
          self::$routeEngine->error(
             $view = "error",
             $message = ["Route Not Found!"],
@@ -49,7 +49,7 @@ class Route extends RoutingEngine
       return $routeData;
    }
 
-   public static function dispatch()
+   public static function dispatch() // call the fun to do with current request route
    {
 
       $currentRoute = self::getRequestRoute();
