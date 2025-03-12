@@ -21,11 +21,25 @@ class Route extends RoutingEngine
 
    public static function getRequestRoute()
    {
-      [$routeData] = array_values(array_filter(self::getRoutes(), function ($route) {
-         return $route["url"] === request()->url && strtolower($route["method"]) === strtolower(request()->method);
-      }));
+      $routeData = [];
 
-      if (!isset($routeData)) {
+      foreach (self::getRoutes() as $route) { //loop each register route
+
+         $pattern = self::convertToRegex($route["url"]); //transform to regx route to check the route parameters
+
+         if (preg_match($pattern, request()->url, $matches)) { //get the matches value
+
+            array_shift($matches);
+         }
+
+         if (($route["url"] === request()->url || count($matches) > 0) && strtolower($route["method"]) === strtolower(request()->method)) {
+
+            $routeData = $route;
+            $routeData["params"] = array_values($matches);
+         }
+      }
+
+      if (!count($routeData) > 0) {
          self::$routeEngine->error(
             $view = "error",
             $message = ["Route Not Found!"],
@@ -39,10 +53,19 @@ class Route extends RoutingEngine
    {
 
       $currentRoute = self::getRequestRoute();
-      if (isset($currentRoute["controller"])) {
-         call_user_func([(new $currentRoute["controller"]()), $currentRoute["handler"]]);
-      } else {
-         call_user_func($currentRoute["handler"]);
+
+      if (isset($currentRoute["controller"])) { //if there is controller call the method inside controller
+
+         call_user_func_array([(new $currentRoute["controller"]()), $currentRoute["handler"]], $currentRoute["params"]);
+      } else { // else call the second parameter function
+
+         call_user_func_array($currentRoute["handler"], $currentRoute["params"]);
       }
+   }
+
+   private static function convertToRegex($path)
+   {
+      $pattern = preg_replace('/\{([^\/]+)\}/', '([^\/]+)', $path);  ///change user/{id} to	#^/user/([^\/]+)$#
+      return '#^' . $pattern . '$#';
    }
 }

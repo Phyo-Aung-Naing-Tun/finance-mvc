@@ -5,6 +5,11 @@ use Root\App\Services\Route\Route;
 
 
 
+Route::get("/user/{id}/name/{slug}", function ($id, $slug) {
+    dump($slug);
+    dump($id);
+});
+
 Route::get("/", function () {
     view("home");
 });
