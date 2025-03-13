@@ -1,3 +1,18 @@
-<?php
+<!doctype html>
+<html>
 
-echo "home";
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/resource/css/output.css" rel="stylesheet">
+</head>
+
+<body>
+    <h1 class="text-3xl font-bold underline text-red-500">
+        Hello world!
+    </h1>
+    <script type="module" src="/resource/js/main.js"></script>
+
+</body>
+
+</html>

@@ -26,3 +26,10 @@ if (!function_exists("view")) {
         include "./resource/view/" . $fileName  . '.php';
     }
 }
+
+if (!function_exists("app_init")) {
+    function app_init()
+    {
+        include __DIR__ . "/bootstrap.php";
+    }
+}
