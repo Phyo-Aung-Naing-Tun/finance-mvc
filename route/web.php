@@ -1,6 +1,7 @@
 <?php
 
 use App\HTTP\Controllers\Auth\LogInController;
+use App\HTTP\Controllers\Auth\RegisterController;
 use Root\App\Services\Route\Route;
 
 
@@ -14,6 +15,7 @@ Route::get("/", function () {
     view("home");
 });
 
+Route::get("/register", [RegisterController::class, "index"]);
 
 Route::get("/login", [LogInController::class, "index"]);
 Route::post("/login", [LogInController::class, "login"]);
