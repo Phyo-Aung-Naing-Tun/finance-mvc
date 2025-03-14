@@ -1,1 +1,11 @@
 @import "tailwindcss";
+
+:root {
+  --color-primary: #1D4ED8;   /* Blue */
+  --color-secondary: #9333EA; /* Purple */
+}
+
+.dark {
+  --color-primary: #2563EB;   /* Different blue for dark mode */
+  --color-secondary: #7C3AED; /* Different purple for dark mode */
+}

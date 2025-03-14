@@ -20,9 +20,31 @@ if (!function_exists("dump")) {
 }
 
 if (!function_exists("view")) {
-    function view($fileName)
+    function view($fileName, $payload = [])
     {
-        $home = "my";
+        $transformKeys = [];
+        $keys = array_keys($payload);
+
+        foreach ($keys as $key) {
+            $$key = $payload[$key];
+            $transformKeys[$key] = &$$key;
+        }
+        $transformKeys = $payload;
         include "./resource/view/" . $fileName  . '.php';
+    }
+}
+
+if (!function_exists(("component"))) {
+    function component($fileName, $payload = [])
+    {
+        $transformKeys = [];
+        $keys = array_keys($payload);
+
+        foreach ($keys as $key) {
+            $$key = $payload[$key];
+            $transformKeys[$key] = &$$key;
+        }
+        $transformKeys = $payload;
+        include "./resource/view/components/" . $fileName  . '.php';
     }
 }
