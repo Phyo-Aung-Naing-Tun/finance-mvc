@@ -6,7 +6,7 @@
             <input class=" w-full border border-gray-300 h-[54px] ps-3 rounded-xl" type="password" placeholder="Password">
             <button class=" w-full h-[54px] tracking-wide font-bold bg-primary rounded-xl text-white text-lg">Login</button>
         </form>
-        <a href="#" class=" tracking-wide text-lg font-bold text-primary text-center w-full inline-block">Forgot Password?</a>
+        <a href="/forgot_password" class=" tracking-wide text-lg font-bold text-primary text-center w-full inline-block">Forgot Password?</a>
         <div class="tracking-wide flex justify-center">
             <span class=" me-2 ">Don’t have an account yet? </span>
             <a class="text-primary font-semibold" href="/register">Sign Up</a>

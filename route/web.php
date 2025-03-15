@@ -1,5 +1,6 @@
 <?php
 
+use App\HTTP\Controllers\Auth\ForgotPasswordController;
 use App\HTTP\Controllers\Auth\LogInController;
 use App\HTTP\Controllers\Auth\RegisterController;
 use Root\App\Services\Route\Route;
@@ -19,3 +20,5 @@ Route::get("/register", [RegisterController::class, "index"]);
 
 Route::get("/login", [LogInController::class, "index"]);
 Route::post("/login", [LogInController::class, "login"]);
+
+Route::get("/forgot_password", [ForgotPasswordController::class, "index"]);
