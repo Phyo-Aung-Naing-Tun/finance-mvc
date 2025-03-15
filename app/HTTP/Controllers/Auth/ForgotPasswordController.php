@@ -8,4 +8,9 @@ class ForgotPasswordController
     {
         return view("auth/forgotPassword");
     }
+
+    public function showResetPasswordPage()
+    {
+        return view("auth/resetPassword");
+    }
 }

@@ -22,3 +22,4 @@ Route::get("/login", [LogInController::class, "index"]);
 Route::post("/login", [LogInController::class, "login"]);
 
 Route::get("/forgot_password", [ForgotPasswordController::class, "index"]);
+Route::get("/reset_password", [ForgotPasswordController::class, "showResetPasswordPage"]);
