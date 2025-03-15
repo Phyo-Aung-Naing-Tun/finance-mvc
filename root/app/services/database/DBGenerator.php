@@ -1,4 +1,9 @@
-<?
+<?php
+
+namespace Root\App\Services\Database;
+
+use PDO;
+use PDOException;
 
 class DBGenerator
 {
