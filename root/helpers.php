@@ -48,3 +48,36 @@ if (!function_exists(("component"))) {
         include "./resource/view/components/" . $fileName  . '.php';
     }
 }
+
+if (!function_exists("config")) { //For getting data inside config folder eg; config("database.host");
+
+    function config($path = null)
+    {
+        if ($path) {
+
+            $pathArray = explode(".", $path);
+
+            $fileName = array_shift($pathArray);
+
+            $configPath =  __DIR__ . "/../app/configs/{$fileName}.php";
+
+            if (!file_exists($configPath)) {
+                return null;
+            }
+
+            $config = require $configPath;
+
+            if (count($pathArray) <= 0) {
+                return $config;
+            }
+
+            foreach ($pathArray as $key) {
+                $config = $config[$key];
+            }
+
+            return $config;
+        }
+
+        return null;
+    }
+}

@@ -21,7 +21,7 @@ class DBGenerator
 
     private $type;
 
-    protected function __construct()
+    protected function connect()
     {
         try {
             // Create a new PDO connection
@@ -35,11 +35,6 @@ class DBGenerator
         } catch (PDOException $e) {
             die("Connection failed: " . $e->getMessage());
         }
-    }
-
-    protected function connect()
-    {
-        return (new self());
     }
 
     protected function getHost()
