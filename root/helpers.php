@@ -81,3 +81,28 @@ if (!function_exists("config")) { //For getting data inside config folder eg; co
         return null;
     }
 }
+
+if (!function_exists("env")) { //For getting data from .env file eg; env("APP_NAME")
+
+    function env($key = null)
+    {
+        $envFile = __DIR__ . "/../.env";
+
+        if (file_exists($envFile)) {
+
+            $envData = parse_ini_file($envFile);
+
+            if (isset($key)) {
+                if (isset($envData[$key])) {
+                    return $envData[$key];
+                } else {
+                    return null;
+                }
+            } else {
+                return $envData;
+            }
+        };
+
+        return null;
+    }
+}
