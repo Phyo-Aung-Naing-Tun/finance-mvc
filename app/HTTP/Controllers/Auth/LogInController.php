@@ -2,6 +2,8 @@
 
 namespace App\HTTP\Controllers\Auth;
 
+use App\Models\User;
+
 class LogInController
 {
 
@@ -15,5 +17,10 @@ class LogInController
     {
         dd("here");
         return "User login";
+    }
+
+    public function store()
+    {
+        User::create(["hello"]);
     }
 }

@@ -1,0 +1,24 @@
+<?php
+
+if ($argc < 2) {
+    echo "Usage: php artisan <command>\n";
+    exit(1);
+}
+
+$command = $argv[1];
+
+switch ($command) {
+    case 'serve':
+        echo "Starting development server at http://localhost:8000\n";
+        exec('php -S localhost:8000');
+        break;
+
+    case 'tailwind:serve':
+        echo "Starting tailwind css \n";
+        exec('npx @tailwindcss/cli -i ./resource/css/input.css -o ./resource/css/output.css --watch');
+        break;
+
+    default:
+        echo "Unknown command: $command\n";
+        exit(1);
+}

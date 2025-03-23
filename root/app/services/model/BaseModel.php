@@ -2,27 +2,19 @@
 
 namespace Root\App\Services\Model;
 
-use Root\App\Services\Database\DBGenerator;
+use Root\App\Services\Database\DBFactory;
 
 class BaseModel
 {
-    public $host;  // Database host
-
-    public $dbname;  // Database name
-
-    public $username;  // Database username
-
-    public $password;  // Database password
 
     public $database;
 
-    public $port;
+    public $connection;
 
-    public $type;
-
+    public $table;
 
     protected function __construct()
     {
-        dd("here");
+        $this->database =  (new DBFactory())->connect($this->connection);
     }
 }

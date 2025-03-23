@@ -1,2 +1,0 @@
-<?php
-echo "hello " . $argv[0] . $argv[1] . $argv[2];

@@ -10,7 +10,7 @@
 <body>
     <div>
         <h1>Error Page</h1>
-        <h1><?= $status ?></h1>
+        <h1 class=" text-red-600"><?= $status ?></h1>
         <?php if (!empty($errorMessages)): ?>
             <div>
                 <?php foreach ($errorMessages as $message): ?>
