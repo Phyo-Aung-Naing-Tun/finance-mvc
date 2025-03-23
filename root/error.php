@@ -8,11 +8,11 @@
 </head>
 
 <body>
-    <div>
-        <h1>Error Page</h1>
-        <h1 class=" text-red-600"><?= $status ?></h1>
+    <div class=" mt-10 space-y-2 p-3 w-full break-words">
+        <h1 class=" text-center text-xl font-bold tracking-wide">Error Page</h1>
+        <h1 class=" text-center text-red-600 font-bold text-3xl tracking-wide"><?= $status ?></h1>
         <?php if (!empty($errorMessages)): ?>
-            <div>
+            <div class=" text-lg mb-3">
                 <?php foreach ($errorMessages as $message): ?>
                     <p><strong><?= htmlspecialchars($message) ?></strong></p>
                 <?php endforeach; ?>
