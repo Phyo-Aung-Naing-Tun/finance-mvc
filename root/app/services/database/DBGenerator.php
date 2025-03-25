@@ -15,15 +15,24 @@ abstract class DBGenerator
 
     public $password;  // Database password
 
-    public $database;
+    public $port; // Database port
 
-    public $port;
+    public $type;  // Database type eg; mysql or pgsql
 
-    public $type;
 
     public function __construct($connection)
     {
-        dd("here");
+        $this->host = $connection["host"] ?? null;
+
+        $this->dbname = $connection["dbname"] ?? null;
+
+        $this->username = $connection["username"] ?? null;
+
+        $this->password = $connection["password"] ?? null;
+
+        $this->port = $connection["port"] ?? null;
+
+        $this->type = $connection["connection"] ?? null;
     }
 
     public function connect()
@@ -35,7 +44,7 @@ abstract class DBGenerator
             // Set PDO to throw exceptions on error
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-            $this->database = $pdo;
+            return $pdo;
             echo "Connected successfully";
         } catch (PDOException $e) {
             die("Connection failed: " . $e->getMessage());

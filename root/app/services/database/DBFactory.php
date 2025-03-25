@@ -33,7 +33,10 @@ class DBFactory extends MainService implements DBFactoryInterface
         if ($connection == MysqlGenerator::CONNECTION_NAME) {
             return (new MysqlGenerator($this->connection))->connect();
         } elseif ($connection == PgsqlGenerator::CONNECTION_NAME) {
-            return (new PgsqlGenerator($connection))->connect();
+            return (new PgsqlGenerator($this->connection))->connect();
+        } else {
+            $this->error(messages: ["Your database type {$connection} isn't supported yet!Plesae use mysql or pgsql"]);
+            exit;
         }
     }
 }
