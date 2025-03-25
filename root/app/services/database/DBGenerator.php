@@ -5,23 +5,28 @@ namespace Root\App\Services\Database;
 use PDO;
 use PDOException;
 
-class DBGenerator
+abstract class DBGenerator
 {
-    private $host;  // Database host
+    public $host;  // Database host
 
-    private $dbname;  // Database name
+    public $dbname;  // Database name
 
-    private $username;  // Database username
+    public $username;  // Database username
 
-    private $password;  // Database password
+    public $password;  // Database password
 
-    private $database;
+    public $database;
 
-    private $port;
+    public $port;
 
-    private $type;
+    public $type;
 
-    protected function connect()
+    public function __construct($connection)
+    {
+        dd("here");
+    }
+
+    public function connect()
     {
         try {
             // Create a new PDO connection
@@ -35,55 +40,5 @@ class DBGenerator
         } catch (PDOException $e) {
             die("Connection failed: " . $e->getMessage());
         }
-    }
-
-    protected function getHost()
-    {
-        return $this->host;
-    }
-
-    protected function getDBName()
-    {
-        return $this->dbname;
-    }
-
-    protected function getUsername()
-    {
-        return $this->username;
-    }
-
-    protected function getPort()
-    {
-        return $this->port;
-    }
-
-    protected function setHost($host = null)
-    {
-        $this->host = $host;
-        return $this;
-    }
-
-    protected function setDBName($dbname = null)
-    {
-        $this->dbname = $dbname;
-        return $this;
-    }
-
-    protected function setUsername($username = null)
-    {
-        $this->username = $username;
-        return $this;
-    }
-
-    protected function setPort($port = null)
-    {
-        $this->port = $port;
-        return $this;
-    }
-
-    protected function setPassword($password = null)
-    {
-        $this->password = $password;
-        return $this;
     }
 }

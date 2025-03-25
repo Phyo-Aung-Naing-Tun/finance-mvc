@@ -6,5 +6,5 @@ namespace Root\App\Services\Database;
 
 interface DBFactoryInterface
 {
-    public function connect($connection);
+    public function build();
 }

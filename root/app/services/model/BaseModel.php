@@ -15,6 +15,6 @@ class BaseModel
 
     protected function __construct()
     {
-        $this->database =  (new DBFactory())->connect($this->connection);
+        $this->database =  (new DBFactory($this->connection))->build();
     }
 }
