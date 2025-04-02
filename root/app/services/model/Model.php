@@ -9,9 +9,10 @@ class Model extends BaseModel
 
     public static $model;
 
-    public static function __callStatic($name, $arguments)
+    public static function __callStatic($method, $arguments)
     {
         $callClass = get_called_class();
         self::$model = new $callClass();
+        self::$model->validateMethod($method)->execute($method, $arguments);
     }
 }

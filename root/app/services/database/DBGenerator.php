@@ -4,8 +4,9 @@ namespace Root\App\Services\Database;
 
 use PDO;
 use PDOException;
+use Root\App\Services\MainService;
 
-abstract class DBGenerator
+abstract class DBGenerator  extends MainService
 {
     public $host;  // Database host
 
@@ -47,7 +48,7 @@ abstract class DBGenerator
             return $pdo;
             echo "Connected successfully";
         } catch (PDOException $e) {
-            die("Connection failed: " . $e->getMessage());
+            $this->error(messages: ["Connection Failed!", $e->getMessage()]);
         }
     }
 }

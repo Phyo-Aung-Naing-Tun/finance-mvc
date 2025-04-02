@@ -12,7 +12,7 @@ class DBFactory extends MainService implements DBFactoryInterface
     public function __construct($connection)
     {
 
-        $connectionName = $connection ? $connection : env("DATABASE_CONNECTION");
+        $connectionName = $connection ? $connection : env("DEFAULT_DATABASE_CONNECTION");
 
         if (!isset($connectionName)) {
             $this->error(messages: ["Couldn't find connection name", "Add your database conntection name in env file", "eg;DATABASE_CONNECTION=your_connection"]);

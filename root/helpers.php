@@ -106,3 +106,30 @@ if (!function_exists("env")) { //For getting data from .env file eg; env("APP_NA
         return null;
     }
 }
+
+if (!function_exists("rawSql")) {
+
+    function rawSql($path = null)
+    {
+        $sqlFile = __DIR__ . "/app/services/sql/sql.php";
+
+        if (file_exists($sqlFile)) {
+
+            $sqlData = require $sqlFile;
+
+            if (isset($path)) {
+                $path = explode(".", $path);
+
+                foreach ($path as $key) {
+                    $sqlData = $sqlData[$key] ?? null;
+                }
+
+                return $sqlData;
+            } else {
+                return $sqlData;
+            }
+        };
+
+        return null;
+    }
+}

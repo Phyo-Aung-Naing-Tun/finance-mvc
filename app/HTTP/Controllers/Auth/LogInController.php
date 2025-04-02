@@ -15,12 +15,11 @@ class LogInController
 
     public function login()
     {
-        dd("here");
         return "User login";
     }
 
     public function store()
     {
-        User::create(["hello"]);
+        User::create(["name" => "Mg Mg"]);
     }
 }
