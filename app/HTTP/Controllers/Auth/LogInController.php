@@ -20,6 +20,13 @@ class LogInController
 
     public function store()
     {
-        User::create(["name" => "Mg Mg"]);
+        $user = User::create([
+            "name" => "Mg Mg",
+            "email" => "email",
+            "phones" => json_encode(['99999999', '4444444']),
+            "password" => "password",
+        ]);
+
+        dd($user);
     }
 }

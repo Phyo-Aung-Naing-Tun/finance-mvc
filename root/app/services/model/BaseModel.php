@@ -26,7 +26,7 @@ class BaseModel extends MainService
         if (!($this->database && $this->connection)) {
             $this->database =  (new DBFactory($this->connection))->build();
             $this->table = $this->table ? $this->table : $this->createTableName();
-            $this->queryBuilder = new QueryBuilder($this->database, $this->table);
+            $this->queryBuilder = new QueryBuilder($this->database, $this->table, $this->fillables);
         }
     }
 
@@ -68,6 +68,6 @@ class BaseModel extends MainService
 
     protected function execute($method, $arguements = null)
     {
-        call_user_func_array([$this->queryBuilder, $method], $arguements);
+        return call_user_func_array([$this->queryBuilder, $method], $arguements);
     }
 }

@@ -13,6 +13,6 @@ class Model extends BaseModel
     {
         $callClass = get_called_class();
         self::$model = new $callClass();
-        self::$model->validateMethod($method)->execute($method, $arguments);
+        return self::$model->validateMethod($method)->execute($method, $arguments);
     }
 }
