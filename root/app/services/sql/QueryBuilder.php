@@ -47,13 +47,20 @@ class QueryBuilder extends MainService  implements QueryBuilderInterface
             // Get last inserted ID
             $lastId = $this->database->lastInsertId();
 
-            // Fetch the newly inserted record
+            return $this->find($lastId);
+        } catch (\PDOException $e) {
+            $this->error(messages: [$e->getMessage()]);
+        }
+    }
+
+    public function find($id)
+    {
+        try {
             $query = $this->database->prepare("SELECT * FROM {$this->table} WHERE id = :id");
-            $query->bindParam(':id', $lastId, PDO::PARAM_INT);
+            $query->bindParam(':id', $id, PDO::PARAM_INT);
             $query->execute();
-            $data =  $query->fetch(PDO::FETCH_ASSOC);
-            return $data;
-        } catch (\Throwable $e) {
+            return $query->fetch(PDO::FETCH_ASSOC);
+        } catch (\PDOException $e) {
             $this->error(messages: [$e->getMessage()]);
         }
     }
