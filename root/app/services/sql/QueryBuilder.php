@@ -11,6 +11,10 @@ class QueryBuilder extends MainService  implements QueryBuilderInterface
     private $database;
     private $table;
     private $fillables;
+    private $keyValueCollection;
+    private $columns;
+    private $parameters;
+    private $sql;
 
     public function __construct($database, $table, $fillables = null)
     {
@@ -60,6 +64,55 @@ class QueryBuilder extends MainService  implements QueryBuilderInterface
             $query->bindParam(':id', $id, PDO::PARAM_INT);
             $query->execute();
             return $query->fetch(PDO::FETCH_ASSOC);
+        } catch (\PDOException $e) {
+            $this->error(messages: [$e->getMessage()]);
+        }
+    }
+
+    public function where($key, $operator = null, $value = null)
+    {
+        try {
+            if (is_null($value)) {
+                $value = $operator;
+                $operator = "=";
+
+                if (is_null($value)) {
+                    return $this->error(messages: ["Compare value is required!"]);
+                }
+            }
+
+            $this->keyValueCollection[$key] = ["sqlSample" => $key . " " . $operator . " " . ":$key", "value" => $value];
+
+            $transformedPlaceholer = implode(" AND ", array_map(fn($data) => $data["sqlSample"], $this->keyValueCollection));
+
+            $this->sql = "SELECT * FROM {$this->table} WHERE {$transformedPlaceholer}";
+
+            return $this;
+        } catch (\Exception $e) {
+            return $this->error(messages: [$e->getMessage()]);
+        }
+    }
+
+    public function get()
+    {
+        try {
+
+            $sql = $this->sql ? $this->sql : "SELECT * FROM {$this->table}";
+
+            $query = $this->database->prepare($this->sql);
+
+            if (!is_null($this->keyValueCollection)) {
+                foreach ($this->keyValueCollection as $key => $value) {
+                    $value = $value["value"] ? $value["value"] : $value;
+
+                    $query->bindValue(":$key", $value);
+                }
+            }
+
+            $query->execute();
+
+            $data =  $query->fetchALL(PDO::FETCH_ASSOC);
+            return $data ? $data : [];
         } catch (\PDOException $e) {
             $this->error(messages: [$e->getMessage()]);
         }

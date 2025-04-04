@@ -15,6 +15,8 @@ class LogInController
 
     public function login()
     {
+        $user = User::where("email", "emai")->get();
+        dump($user);
         return "User login";
     }
 
@@ -26,7 +28,5 @@ class LogInController
             "phones" => json_encode(['99999999', '4444444']),
             "password" => "password",
         ]);
-
-        dd($user);
     }
 }
