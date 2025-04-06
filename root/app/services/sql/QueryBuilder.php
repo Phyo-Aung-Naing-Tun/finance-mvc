@@ -113,7 +113,6 @@ class QueryBuilder extends MainService  implements QueryBuilderInterface
         $sql = $this->sql ? $this->sql : "SELECT * FROM {$this->table}";
 
         $this->sql = $sql . " " . "ORDER BY updated_at DESC";
-        dump($this->sql);
 
         return $this;
     }
@@ -133,6 +132,20 @@ class QueryBuilder extends MainService  implements QueryBuilderInterface
     {
         $data = $this->get();
         return count($data) > 0;
+    }
+
+    public function orderBy($column, $type = "asc")
+    {
+        if (in_array($type, ["asc", "desc"])) {
+            $type = strtoupper($type);
+            $sql = $this->sql ? $this->sql : "SELECT * FROM {$this->table}";
+
+            $this->sql = $sql . " " . "ORDER BY $column $type";
+
+            return $this;
+        } else {
+            $this->error(messages: ["( $type) is not supported!"]);
+        };
     }
 
     private function execute()

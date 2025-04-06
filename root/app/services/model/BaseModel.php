@@ -9,7 +9,7 @@ use Root\App\Services\SQL\QueryBuilder;
 class BaseModel extends MainService
 {
 
-    const ALLOW_METHODS = ["create", "delete", "all", "first", "latest", "where"];
+    const ALLOW_METHODS = ["create", "delete", "all", "first", "latest", "where", "orderBy"];
 
     public $database;
 

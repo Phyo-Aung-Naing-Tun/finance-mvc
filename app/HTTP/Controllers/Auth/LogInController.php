@@ -15,7 +15,7 @@ class LogInController
 
     public function login()
     {
-        $user = User::first();
+        $user = User::orderBy("id", "asc")->first();
         dump($user);
         return "User login";
     }
@@ -23,7 +23,7 @@ class LogInController
     public function store()
     {
         $user = User::create([
-            "name" => "Mg Mg Aung",
+            "name" => "aung Mg Aung",
             "email" => "email",
             "phones" => json_encode(['99999999', '4444444']),
             "password" => "password",
