@@ -15,7 +15,7 @@ class LogInController
 
     public function login()
     {
-        $user = User::where("email", "emai")->get();
+        $user = User::first();
         dump($user);
         return "User login";
     }
@@ -23,7 +23,7 @@ class LogInController
     public function store()
     {
         $user = User::create([
-            "name" => "Mg Mg",
+            "name" => "Mg Mg Aung",
             "email" => "email",
             "phones" => json_encode(['99999999', '4444444']),
             "password" => "password",

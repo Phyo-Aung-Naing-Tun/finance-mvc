@@ -97,8 +97,47 @@ class QueryBuilder extends MainService  implements QueryBuilderInterface
     {
         try {
 
-            $sql = $this->sql ? $this->sql : "SELECT * FROM {$this->table}";
+            $this->sql = $this->sql ? $this->sql : "SELECT * FROM {$this->table}";
 
+            $query = $this->execute();
+
+            $data =  $query->fetchALL(PDO::FETCH_ASSOC);
+            return $data ? $data : [];
+        } catch (\PDOException $e) {
+            $this->error(messages: [$e->getMessage()]);
+        }
+    }
+
+    public function latest()
+    {
+        $sql = $this->sql ? $this->sql : "SELECT * FROM {$this->table}";
+
+        $this->sql = $sql . " " . "ORDER BY updated_at DESC";
+        dump($this->sql);
+
+        return $this;
+    }
+
+    public function first()
+    {
+        $this->sql = $this->sql ? $this->sql . " " . "LIMIT 1" : "SELECT * FROM {$this->table} LIMIT 1";
+
+        $query = $this->execute();
+
+        $data =  $query->fetchALL(PDO::FETCH_ASSOC);
+
+        return $data ? $data : null;
+    }
+
+    public function exist()
+    {
+        $data = $this->get();
+        return count($data) > 0;
+    }
+
+    private function execute()
+    {
+        try {
             $query = $this->database->prepare($this->sql);
 
             if (!is_null($this->keyValueCollection)) {
@@ -111,8 +150,7 @@ class QueryBuilder extends MainService  implements QueryBuilderInterface
 
             $query->execute();
 
-            $data =  $query->fetchALL(PDO::FETCH_ASSOC);
-            return $data ? $data : [];
+            return $query;
         } catch (\PDOException $e) {
             $this->error(messages: [$e->getMessage()]);
         }
