@@ -93,11 +93,35 @@ class QueryBuilder extends MainService  implements QueryBuilderInterface
         }
     }
 
+    public function whereBetween($column, $valueOne, $valueTwo)
+    {
+        try {
+            $this->keyValueCollection["valueOne"] = ["sqlSample" => $column . " " . "BETWEEN :valueOne AND :valueTwo", "value" => $valueOne];
+
+            $this->keyValueCollection["valueTwo"] = ["sqlSample" => "", "value" => $valueTwo];
+
+            $transformedPlaceholer = array_map(fn($data) => $data["sqlSample"], $this->keyValueCollection);
+
+            $transformedPlaceholer = array_filter($transformedPlaceholer, function ($data) {
+                return $data != '' && $data != null;
+            });
+
+            $transformedPlaceholer = implode(" AND ", $transformedPlaceholer);
+
+            $this->sql = "SELECT * FROM {$this->table} WHERE {$transformedPlaceholer}";
+            return $this;
+        } catch (\Exception $e) {
+            return $this->error(messages: [$e->getMessage()]);
+        }
+    }
+
     public function get()
     {
         try {
 
             $this->sql = $this->sql ? $this->sql : "SELECT * FROM {$this->table}";
+
+            dump($this->sql);
 
             $query = $this->execute();
 
