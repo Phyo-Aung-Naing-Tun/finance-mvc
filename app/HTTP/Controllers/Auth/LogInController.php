@@ -15,7 +15,7 @@ class LogInController
 
     public function login()
     {
-        $user = User::whereBetween("id", 1, 4)->latest()->first();
+        $user = User::whereIn("id", [1, 3, 7])->latest()->first();
         dump($user);
         return "User login";
     }

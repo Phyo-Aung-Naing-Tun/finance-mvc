@@ -109,6 +109,49 @@ class QueryBuilder extends MainService  implements QueryBuilderInterface
             $transformedPlaceholer = implode(" AND ", $transformedPlaceholer);
 
             $this->sql = "SELECT * FROM {$this->table} WHERE {$transformedPlaceholer}";
+
+            return $this;
+        } catch (\Exception $e) {
+            return $this->error(messages: [$e->getMessage()]);
+        }
+    }
+
+    public function whereIn($column, $values)
+    {
+
+        try {
+            if (!is_array($values)) {
+                return $this->error(messages: ["Second arguement in whereIn() method must be array!"]);
+            };
+
+            if (!isset($column)) {
+                return $this->error(messages: ["First arguement in whereIn() method is required!"]);
+            };
+
+            foreach ($values as $key => $value) {
+                $placeholders[] = "$column" . ++$key;
+            };
+
+            foreach ($values as $key => $value) {
+                if ($key == 0) {
+                    $placeholdersToString = implode(",", array_map(fn($data) => ":$data", $placeholders));
+                    $this->keyValueCollection[$placeholders[$key]] =  ["sqlSample" => $column . " " . "IN ($placeholdersToString)", "value" => $value];
+                } else {
+                    $this->keyValueCollection[$placeholders[$key]] =  ["sqlSample" => "", "value" => $value];
+                }
+            };
+
+
+            $transformedQuery = array_map(fn($data) => $data["sqlSample"], $this->keyValueCollection);
+
+            $transformedQuery = array_filter($transformedQuery, function ($data) {
+                return $data != '' && $data != null;
+            });
+
+            $transformedQuery = implode(" AND ", $transformedQuery);
+
+            $this->sql = "SELECT * FROM {$this->table} WHERE {$transformedQuery}";
+
             return $this;
         } catch (\Exception $e) {
             return $this->error(messages: [$e->getMessage()]);

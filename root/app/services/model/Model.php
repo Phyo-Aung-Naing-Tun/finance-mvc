@@ -11,8 +11,12 @@ class Model extends BaseModel
 
     public static function __callStatic($method, $arguments)
     {
-        $callClass = get_called_class();
-        self::$model = new $callClass();
-        return self::$model->validateMethod($method)->execute($method, $arguments);
+        try {
+            $callClass = get_called_class();
+            self::$model = new $callClass();
+            return self::$model->validateMethod($method)->execute($method, $arguments);
+        } catch (\Throwable $e) {
+            self::$model->error(messages: [$e->getMessage()]);
+        }
     }
 }
