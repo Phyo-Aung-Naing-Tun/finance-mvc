@@ -11,9 +11,7 @@ class QueryBuilder extends MainService  implements QueryBuilderInterface
     private $database;
     private $table;
     private $fillables;
-    private $keyValueCollection;
-    private $columns;
-    private $parameters;
+    private $keyValueCollection; // this is use to create raw sql and bind value of smaple placeholder in raw sql 
     private $sql;
 
     public function __construct($database, $table, $fillables = null)
@@ -130,7 +128,7 @@ class QueryBuilder extends MainService  implements QueryBuilderInterface
 
             foreach ($values as $key => $value) {
                 $placeholders[] = "$column" . ++$key;
-            };
+            }; //create key array by the incomming value  length and column name. eg ["id1","id2"]
 
             foreach ($values as $key => $value) {
                 if ($key == 0) {
@@ -163,8 +161,6 @@ class QueryBuilder extends MainService  implements QueryBuilderInterface
         try {
 
             $this->sql = $this->sql ? $this->sql : "SELECT * FROM {$this->table}";
-
-            dump($this->sql);
 
             $query = $this->execute();
 
