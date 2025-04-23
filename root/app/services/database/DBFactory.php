@@ -9,7 +9,7 @@ class DBFactory extends MainService implements DBFactoryInterface
 
     private $connection;
 
-    public function __construct($connection)
+    public function __construct($connection = null)
     {
 
         $connectionName = $connection ? $connection : env("DEFAULT_DATABASE_CONNECTION");

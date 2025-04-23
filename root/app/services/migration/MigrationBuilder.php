@@ -47,7 +47,8 @@ class MigrationBuilder
 
         $stub = <<<PHP
 <?php
-
+use Root\App\Services\Migration\Blueprint;
+use Root\App\Services\Migration\Schema;
 use Root\App\Services\Migration\Migration;
 
 return new class extends Migration {
@@ -56,10 +57,10 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        // Schema::create('$this->tableName', function (Blueprint \$table) {
-        //     \$table->id();
-        //     \$table->timestamps();
-        // });
+         Schema::create('$this->tableName', function (Blueprint \$table) {
+             \$table->id();
+             \$table->timestamps();
+         });
     }
 
     /**
@@ -67,7 +68,7 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        // Schema::dropIfExists('$this->tableName');
+         Schema::dropIfExists('$this->tableName');
     }
 };
 PHP;
