@@ -6,6 +6,8 @@ use Root\App\Services\Model\Model;
 
 abstract class MigrationManager extends Model
 {
+    use MigrationExecutor;
+
     public $fillables = [
         "migration",
         "batch",
@@ -26,39 +28,30 @@ abstract class MigrationManager extends Model
             ->build();
     }
 
-    protected function makeMigrationTable()
+    public function executeMigration()
     {
-        Schema::create('migrations', function (Blueprint $table) {
-            $table->id();
-            $table->string("migration");
-            $table->int("batch");
-            $table->timestamps();
-        });
-    }
+        echo "\033[32m[Migration Running]\033[0m \n\n";
 
-    protected function filterDuplicateMigrations($migrationNames)
-    {
-        $finishedMigrations = self::all();
-        $finishedMigrationNames = array_map(fn($migration) => $migration["migration"], $finishedMigrations);
-        return array_diff($migrationNames, $finishedMigrationNames);
-    }
+        $this->makeMigrationTable();
 
-    public function addToMigrationTable($migrationName, $batch)
-    {
-        $toArray = explode(".", $migrationName);
+        $migrationFileNames = $this->getMigrationFileNames();
 
-        $name = array_shift($toArray);
+        $batch = $this->getBatch();
 
+        if (count($migrationFileNames) > 0) {
 
-        return self::create([
-            "migration" => $name,
-            "batch" => $batch,
-        ]);
-    }
+            foreach ($migrationFileNames as $migrationFileName) {
 
-    public function getBatch()
-    {
-        $latestMigration = self::latest()->first();
-        return $latestMigration ? $latestMigration["batch"] + 1 : 1;
+                $migration = $this->runMigration($migrationFileName);
+
+                if (isset($migration)) {
+
+                    $this->addToMigrationTable($migration, $batch);
+                }
+            }
+        } else {
+            echo "\033[32m[Nothing to migrate]\033[0m \n\n";
+        }
+        return;
     }
 }
