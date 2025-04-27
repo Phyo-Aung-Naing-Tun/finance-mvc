@@ -7,5 +7,4 @@ if ($argc < 2) {
     echo "Usage: php lite <command>\n";
     exit(1);
 }
-
 (new CommandManager($argv))->execute();

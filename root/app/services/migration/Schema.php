@@ -16,5 +16,14 @@ class Schema
         $database->exec($sqlStatement);
     }
 
+    public static function hasTable($tableName)
+    {
+        $database =  (new DBFactory())->build();
+        $stmt = $database->prepare("SHOW TABLES LIKE ?");
+        $stmt->execute([$tableName]);
+
+        return $stmt->rowCount() > 0 ? true : false;
+    }
+
     public static function dropIfExists($table) {}
 }

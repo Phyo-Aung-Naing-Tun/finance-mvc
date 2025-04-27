@@ -156,6 +156,48 @@ class QueryBuilder extends MainService  implements QueryBuilderInterface
         }
     }
 
+    public function whereNotIn($column, $values)
+    {
+
+        try {
+            if (!is_array($values)) {
+                return $this->error(messages: ["Second arguement in whereNotIn() method must be array!"]);
+            };
+
+            if (!isset($column)) {
+                return $this->error(messages: ["First arguement in whereNotIn() method is required!"]);
+            };
+
+            foreach ($values as $key => $value) {
+                $placeholders[] = "$column" . ++$key;
+            }; //create key array by the incomming value  length and column name. eg ["id1","id2"]
+
+            foreach ($values as $key => $value) {
+                if ($key == 0) {
+                    $placeholdersToString = implode(",", array_map(fn($data) => ":$data", $placeholders));
+                    $this->keyValueCollection[$placeholders[$key]] =  ["sqlSample" => $column . " " . "NOT IN ($placeholdersToString)", "value" => $value];
+                } else {
+                    $this->keyValueCollection[$placeholders[$key]] =  ["sqlSample" => "", "value" => $value];
+                }
+            };
+
+
+            $transformedQuery = array_map(fn($data) => $data["sqlSample"], $this->keyValueCollection);
+
+            $transformedQuery = array_filter($transformedQuery, function ($data) {
+                return $data != '' && $data != null;
+            });
+
+            $transformedQuery = implode(" AND ", $transformedQuery);
+
+            $this->sql = "SELECT * FROM {$this->table} WHERE {$transformedQuery}";
+
+            return $this;
+        } catch (\Exception $e) {
+            return $this->error(messages: [$e->getMessage()]);
+        }
+    }
+
     public function get()
     {
         try {
@@ -188,7 +230,18 @@ class QueryBuilder extends MainService  implements QueryBuilderInterface
 
         $data =  $query->fetchALL(PDO::FETCH_ASSOC);
 
-        return $data ? $data : null;
+        return $data ? $data[0] : null;
+    }
+
+    public function all()
+    {
+        $this->sql = "SELECT * FROM {$this->table}";
+
+        $query = $this->execute();
+
+        $data =  $query->fetchALL(PDO::FETCH_ASSOC);
+
+        return $data ? $data : [];
     }
 
     public function exist()

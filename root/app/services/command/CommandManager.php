@@ -8,13 +8,11 @@ class CommandManager
 {
     private $command;
     private $payload;
-    private $migration;
     public function __construct($data)
     {
         $this->command = $data[1];
         array_splice($data, 0, 2);
         $this->payload = $data;
-        $this->migration = new Migration();
     }
 
     public function execute()
@@ -32,16 +30,18 @@ class CommandManager
                 break;
 
             case "migrate":
-
-                $this->migration->migrate();
+                $migration = new Migration();
+                $migration->migrate();
                 break;
 
             case "migrate:fresh":
-                $this->migration->migrateFresh();
+                $migration = new Migration();
+                $migration->migrateFresh();
                 break;
 
             case "make:migration":
-                $this->migration->createMigrateFile($this->payload);
+                $migration = new Migration();
+                $migration->createMigrateFile($this->payload);
                 break;
 
             default:

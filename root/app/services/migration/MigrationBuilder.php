@@ -72,10 +72,18 @@ return new class extends Migration {
     }
 };
 PHP;
+        $folder =  __DIR__ . "/../../../../database/migrations";
 
-        $filePath = __DIR__ . "/../../../../database/{$this->migrationName}";
-        file_put_contents($filePath, $stub);
+        if (is_dir($folder)) {
 
-        echo "\n✅ Migration created: {$this->migrationName}\n";
+            $filePath = $folder . "/{$this->migrationName}";
+
+            file_put_contents($filePath, $stub);
+
+            echo "\n✅ Migration created: {$this->migrationName}\n";
+        } else {
+            echo "\n❌ Make sure migrations folder exist in database folder!\n";
+            return;
+        }
     }
 }
