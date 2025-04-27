@@ -4,6 +4,13 @@
 This guide explains how to create a migration file using the PHP Lite CLI command and how the migration system works.
 
 ---
+## ⚙️ Command
+
+To migrate migration files, use the following CLI command:
+
+```bash
+php lite migrate 
+```
 
 ## ⚙️ Command
 
