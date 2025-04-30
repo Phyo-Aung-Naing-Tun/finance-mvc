@@ -8,9 +8,10 @@ use Root\App\Services\Migration\MigrationManager;
 class Migration extends MigrationManager
 {
 
-    public function migrate()
+    public function migrate($payload)
     {
-        return $this->executeMigration();
+        $tagetFileName = array_shift($payload);
+        return $this->executeMigration($tagetFileName);
     }
 
     public function migrateFresh()

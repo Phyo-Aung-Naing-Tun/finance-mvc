@@ -28,13 +28,13 @@ abstract class MigrationManager extends Model
             ->build();
     }
 
-    public function executeMigration()
+    public function executeMigration(string|null $targetFileName = null)
     {
         echo "\033[32m[Migration Running]\033[0m \n\n";
 
         $this->makeMigrationTable();
 
-        $migrationFileNames = $this->getMigrationFileNames();
+        $migrationFileNames = $this->getMigrationFileNames($targetFileName);
 
         $batch = $this->getBatch();
 

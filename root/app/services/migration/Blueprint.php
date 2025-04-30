@@ -16,7 +16,7 @@ class Blueprint
 
     public function id($name = "id")
     {
-        $this->columns[] = "`$name` INT AUTO_INCREMENT PRIMARY KEY UNIQUE NOT NULL";
+        $this->columns[] = "`$name` BIGINT  AUTO_INCREMENT PRIMARY KEY UNIQUE NOT NULL";
         return $this;
     }
 
@@ -28,7 +28,7 @@ class Blueprint
 
     public function int($name)
     {
-        $this->columns[] = "`$name` INT NOT NULL";
+        $this->columns[] = "`$name` BIGINT  NOT NULL";
         return $this;
     }
 

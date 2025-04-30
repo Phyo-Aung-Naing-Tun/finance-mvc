@@ -31,7 +31,7 @@ class CommandManager
 
             case "migrate":
                 $migration = new Migration();
-                $migration->migrate();
+                $migration->migrate($this->payload);
                 break;
 
             case "migrate:fresh":

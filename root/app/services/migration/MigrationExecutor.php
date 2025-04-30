@@ -24,43 +24,52 @@ trait MigrationExecutor
         }
     }
 
-    protected function getMigrationFileNames()
+    protected function getMigrationFileNames(string|null $targetFileName = null)
     {
 
-        $files = array_values(array_diff(scandir($this->dir), ['.', '..']));
+        if ($targetFileName) {
+            $migrationNames = [$targetFileName];
+        } else {
+            $files = array_values(array_diff(scandir($this->dir), ['.', '..']));
 
-        $migrationNames = array_map(function ($file) { //get name and cut .php 
-            $toArray = explode(".", $file);
-            return array_shift($toArray);
-        }, $files);
+            $migrationNames = array_map(function ($file) { //get name and cut .php 
+                $toArray = explode(".", $file);
+                return array_shift($toArray);
+            }, $files);
+        }
 
         return $this->filterDuplicateMigrations($migrationNames);
     }
 
-    protected function filterDuplicateMigrations($migrationNames)
+    protected function filterDuplicateMigrations(array $migrationNames)
     {
         $finishedMigrations = self::all();
         $finishedMigrationNames = array_map(fn($migration) => $migration["migration"], $finishedMigrations);
         return array_diff($migrationNames, $finishedMigrationNames);
     }
 
-    protected function runMigration($fileName)
+    protected function runMigration(string $fileName)
     {
         $filePath = $this->dir . "/" . $fileName . ".php";
-        try {
-            $migration = require $filePath;
+        if (file_exists($filePath)) {
+            try {
+                $migration = require $filePath;
 
-            if (method_exists($migration, "up")) {
-                $migration->up();
-                echo "\033[32m[SUCCESS]\033[0m Migrated: {$fileName}" . PHP_EOL . "\n";
-                return $fileName;
-            } else {
-                echo "\033[33m[SKIPPED]\033[0m No 'up' method: {$fileName}" . PHP_EOL . "\n";
-                return null;
+                if (method_exists($migration, "up")) {
+                    $migration->up();
+                    echo "\033[32m[SUCCESS]\033[0m Migrated: {$fileName}" . PHP_EOL . "\n";
+                    return $fileName;
+                } else {
+                    echo "\033[33m[SKIPPED]\033[0m No 'up' method: {$fileName}" . PHP_EOL . "\n";
+                    return;
+                }
+            } catch (Exception $e) {
+                echo "\033[31m[FAILED]\033[0m {$fileName}: " . PHP_EOL . "\n";
+                return;
             }
-        } catch (Exception $e) {
-            echo "\033[31m[FAILED]\033[0m {$fileName}: " . PHP_EOL . "\n";
-            return null;
+        } else {
+            echo "\033[31m[FAILED]\033[0m migration file {$fileName} doesn't exist: " . PHP_EOL . "\n";
+            return;
         }
     }
 

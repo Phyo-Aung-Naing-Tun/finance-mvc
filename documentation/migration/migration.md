@@ -11,6 +11,19 @@ To migrate migration files, use the following CLI command:
 ```bash
 php lite migrate 
 ```
+## 🎯 Run a Specific Migration
+
+### Run Single Migration File
+
+## ⚙️ Command
+
+```bash
+php lite migrate 2025_04_30_151346_create_wallet_table
+```
+
+This command will only run the specified migration file. The filename must match exactly (without the `.php` extension).
+
+---
 
 ## ⚙️ Command
 
