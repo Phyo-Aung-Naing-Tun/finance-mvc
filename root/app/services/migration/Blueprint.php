@@ -47,7 +47,7 @@ class Blueprint
     public function timestamps($name = null)
     {
         if ($name) {
-            $this->columns[] = "`$name` TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL";
+            $this->columns[] = "`$name` TIMESTAMP NOT NULL";
         } else {
             $this->columns[] = "`created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL";
             $this->columns[] = "`updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL";
@@ -82,6 +82,20 @@ class Blueprint
         $this->columns = $transformData;
         return $this;
     }
+
+    public function unique()
+    {
+        $transformData = [];
+        foreach ($this->columns as $key => $column) {
+            if ($key ==  count($this->columns) - 1) {
+                $column = $column . " " . "UNIQUE";
+            }
+            $transformData[] = $column;
+        };
+        $this->columns = $transformData;
+        return $this;
+    }
+
 
     public function toSql()
     {

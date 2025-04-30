@@ -17,8 +17,8 @@ return [
         "password" => env("DATABASE_PASSWORD") ?? "",
         "port" => env("DATABASE_PORT") ?? 5432
     ],
-    "finance_pgsql" => [
-        "connection" => "pgsql",
+    "mysql_two" => [
+        "connection" => "mysql",
         "host" =>  env("FINANCE_DATABASE_HOST") ?? "localhost",
         "dbname" => env("FINANCE_DATABASE_NAME") ?? "dbname",
         "username" => env("FINANCE_DATABASE_USERNAME") ?? "root",
