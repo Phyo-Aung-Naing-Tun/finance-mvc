@@ -25,5 +25,17 @@ class Schema
         return $stmt->rowCount() > 0 ? true : false;
     }
 
-    public static function dropIfExists($table) {}
+    public static function dropIfExists($tableName)
+    {
+        $database =  (new DBFactory())->build();
+        $stmt = $database->prepare("DROP TABLE IF EXISTS $tableName");
+        $stmt->execute();
+    }
+
+    public static function freshMigrationTable()
+    {
+        $database =  (new DBFactory())->build();
+        $stmt = $database->prepare("DROP TABLE IF EXISTS migrations");
+        $stmt->execute();
+    }
 }

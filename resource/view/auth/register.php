@@ -2,10 +2,10 @@
 
     <?php component("headerNavigation", ["title" => "sign up", "showMenuButton" => false]) ?>
     <div class=" p-4 mt-[20%] space-y-[28px]">
-        <form action="" method="post" class=" space-y-[30px] ">
-            <input class=" w-full border border-gray-300 h-[54px] ps-3 rounded-xl" type="name" placeholder="Name">
-            <input class=" w-full border border-gray-300 h-[54px] ps-3 rounded-xl" type="email" placeholder="Email">
-            <input class=" w-full border border-gray-300 h-[54px] ps-3 rounded-xl" type="password" placeholder="Password">
+        <form id="registerForm" class=" space-y-[30px] ">
+            <input name="name" class=" w-full border border-gray-300 h-[54px] ps-3 rounded-xl" type="name" placeholder="Name">
+            <input name="email" class=" w-full border border-gray-300 h-[54px] ps-3 rounded-xl" type="email" placeholder="Email">
+            <input name="password" class=" w-full border border-gray-300 h-[54px] ps-3 rounded-xl" type="password" placeholder="Password">
             <div class=" flex items-center space-x-3">
                 <input type="checkbox" class=" accent-purple-600 flex-1 min-w-5 min-h-5">
                 <div class="">
@@ -28,3 +28,19 @@
         </div>
     </div>
 </div>
+<script>
+    let form = document.querySelector("#registerForm");
+
+    form.addEventListener("submit", function(event) {
+        fetch("http://localhost:8000/register")
+
+
+    });
+
+
+    function getFormData(form) {
+        const formData = new FormData(form);
+        const values = Object.fromEntries(formData.entries());
+        return values;
+    }
+</script>

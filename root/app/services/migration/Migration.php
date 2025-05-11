@@ -16,7 +16,10 @@ class Migration extends MigrationManager
 
     public function migrateFresh()
     {
-        echo "freshing the migrations";
+        $fresh = $this->freshMigration();
+        if ($fresh) {
+            $this->executeMigration();
+        }
     }
 
     public function createMigrateFile($payload)

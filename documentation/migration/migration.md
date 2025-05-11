@@ -124,18 +124,17 @@ CREATE TABLE `posts` (
 
 ## 🧹 Rollback Migration
 
-To reverse a migration, define the `down()` method using:
+To reverse a migration, use the following command
 
-```php
-Schema::dropIfExists('posts');
+## ⚙️ Command
+
+To generate a new migration file, use the following CLI command:
+
+```bash
+php lite migrate:fresh
 ```
 
-This will generate:
-
-```sql
-DROP TABLE IF EXISTS `posts`;
-```
-
+This will drop all tables in your database;
 ---
 
 ## ✅ Summary

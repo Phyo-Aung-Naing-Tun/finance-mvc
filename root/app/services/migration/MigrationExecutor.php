@@ -6,7 +6,7 @@ use Exception;
 
 trait MigrationExecutor
 {
-    protected $dir = __DIR__ . "/../../../../database/migrations";
+
 
     protected function makeMigrationTable()
     {
@@ -38,7 +38,7 @@ trait MigrationExecutor
             }, $files);
         }
 
-        return $this->filterDuplicateMigrations($migrationNames);
+        return $migrationNames;
     }
 
     protected function filterDuplicateMigrations(array $migrationNames)
