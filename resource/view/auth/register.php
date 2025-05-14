@@ -32,10 +32,27 @@
     let form = document.querySelector("#registerForm");
 
     form.addEventListener("submit", function(event) {
-        fetch("http://localhost:8000/register")
+        event.preventDefault();
 
-
+        fetch("http://localhost:8000/user")
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                }
+                return response.text(); // wait for the response to resolve to JSON
+            })
+            .then(data => {
+                console.log("Data received:", data); // now you get the actual users
+            })
+            .catch(error => {
+                console.error("Fetch error:", error);
+            })
+            .finally(() => {
+                console.log("Request finished");
+            });
     });
+
+
 
 
     function getFormData(form) {
